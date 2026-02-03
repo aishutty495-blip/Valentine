@@ -9,6 +9,7 @@
       background: #ffe6f0;
       text-align: center;
       margin-top: 100px;
+      overflow: hidden; /* prevents scrollbars when hearts float */
     }
 
     h1 {
@@ -20,29 +21,61 @@
       padding: 10px 20px;
       margin: 20px;
       cursor: pointer;
+      position: relative;
+      z-index: 1;
     }
 
     #noBtn {
       position: absolute;
     }
+
+    /* Heart shape */
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
   </style>
 </head>
 <body>
-<body>
 
+  <!-- Cute image -->
   <img 
     src="cute.png"
     alt="Cute Valentine"
     style="width: 260px; margin-bottom: 20px;"
   >
+
+  <!-- Main question -->
   <h1>Shibuya, will you be my valentine? 💖</h1>
 
+  <!-- Buttons -->
   <button onclick="yesClicked()">Yes 💘</button>
   <button id="noBtn" onmouseover="moveNo()">No 💔</button>
 
+  <!-- JavaScript -->
   <script>
     function yesClicked() {
       alert("Yay!!! ❤️ I knew it!");
+
+      // Create 20 hearts
+      for(let i=0; i<20; i++){
+        createHeart();
+      }
     }
 
     function moveNo() {
@@ -51,6 +84,42 @@
       const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
+    }
+
+    function createHeart(){
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      
+      // Start hearts from Yes button center
+      const yesBtn = document.querySelector("button[onclick='yesClicked()']");
+      const rect = yesBtn.getBoundingClientRect();
+      heart.style.left = rect.left + rect.width/2 + "px";
+      heart.style.top = rect.top + "px";
+
+      heart.style.background = randomColor();
+      heart.style.position = "absolute";
+      heart.style.width = "20px";
+      heart.style.height = "20px";
+      heart.style.transform = "rotate(45deg)";
+      heart.style.zIndex = "10";
+
+      document.body.appendChild(heart);
+
+      // Animate heart
+      const randX = Math.random()*100 - 50; // random horizontal movement
+      const randY = Math.random()*-150 - 50; // random vertical float
+      heart.animate([
+        { transform: "translate(0,0) rotate(45deg)", opacity: 1 },
+        { transform: `translate(${randX}px, ${randY}px) rotate(45deg)`, opacity: 0 }
+      ], { duration: 1000, easing: "ease-out" });
+
+      // Remove after animation
+      setTimeout(() => heart.remove(), 1000);
+    }
+
+    function randomColor(){
+      const colors = ["#ff4d6d", "#ff7f87", "#ff66b3", "#ff1a75"];
+      return colors[Math.floor(Math.random() * colors.length)];
     }
   </script>
 
