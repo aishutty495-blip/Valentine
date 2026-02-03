@@ -38,24 +38,8 @@
     }
 
     @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-200px) scale(2); }
-    }
-
-    #result {
-      font-size: 32px;
-      color: #d63384;
-      margin-top: 50px;
-    }
-
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      text-decoration: none;
-      color: white;
-      background: #d63384;
-      padding: 10px 20px;
-      border-radius: 8px;
+      0% { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(2); }
     }
   </style>
 </head>
@@ -71,9 +55,6 @@
   <button onclick="yesClicked()">Yes 💘</button>
   <button id="noBtn" onmouseover="moveNo()">No 💔</button>
 
-  <div id="result"></div>
-  <a id="tripLink" href="#">Plan Our Trip!</a>
-
   <script>
     // Move the No button randomly
     function moveNo() {
@@ -87,38 +68,43 @@
       noBtn.style.top = y + "px";
     }
 
-    // Handle Yes click
+    // Create heart explosion
     function yesClicked() {
       // Hide buttons
       document.querySelector('button[onclick="yesClicked()"]').style.display = 'none';
       document.getElementById("noBtn").style.display = 'none';
 
-      // Create hearts
-      const heartCount = 50;
+      // Position of the original heart (center of button)
+      const centerX = window.innerWidth / 2;
+      const centerY = 200; // approx where the button is
+
+      const heartCount = 30;
       for (let i = 0; i < heartCount; i++) {
-        createHeart();
+        createHeart(centerX, centerY);
       }
 
-      // Show result after 2.5 seconds
+      // Show alert after animation
       setTimeout(() => {
-        document.getElementById("result").textContent = "Output: Yes 💖";
-        // Change trip link
-        const tripLink = document.getElementById("tripLink");
-        tripLink.href = "https://www.tripadvisor.com/"; // Example trip page
-        tripLink.textContent = "Let's Go on a Trip! 🌍";
-      }, 2500);
+        alert("Yay!!! ❤️ I knew it!");
+      }, 2000);
     }
 
     // Function to create a single heart
-    function createHeart() {
+    function createHeart(x, y) {
       const heart = document.createElement('div');
       heart.className = 'heart';
       heart.textContent = '💖';
-      heart.style.left = Math.random() * (window.innerWidth - 30) + 'px';
-      heart.style.top = Math.random() * (window.innerHeight - 30) + 'px';
+      heart.style.left = x + 'px';
+      heart.style.top = y + 'px';
+      // Random direction
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 100 + Math.random() * 100;
+      heart.style.setProperty('--x', distance * Math.cos(angle) + 'px');
+      heart.style.setProperty('--y', distance * Math.sin(angle) + 'px');
       heart.style.fontSize = (20 + Math.random() * 30) + 'px';
       document.body.appendChild(heart);
 
+      // Remove heart after animation
       setTimeout(() => {
         heart.remove();
       }, 2000);
