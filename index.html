@@ -61,21 +61,20 @@
   <img src="cute.png" alt="Cute Valentine" style="width: 260px; margin-bottom: 20px; border-radius: 20px;">
   <h1>Shibuya, will you be my valentine? 💖</h1>
 
-  <button onclick="yesClicked()">Yes 💘</button>
+  <button id="yesBtn">Yes 💘</button>
   <button id="noBtn" onmouseover="moveNo()">No 💔</button>
 
   <div id="message"></div>
 
   <script>
-    function yesClicked() {
-      // Show a non-blocking message
-      document.getElementById("message").innerText = "Yay!!! ❤️ I knew it!";
+    const yesBtn = document.getElementById("yesBtn");
 
-      // Create 30 hearts for a bigger effect
+    yesBtn.addEventListener("click", () => {
+      document.getElementById("message").innerText = "Yay!!! ❤️ I knew it!";
       for(let i=0; i<30; i++){
         createHeart();
       }
-    }
+    });
 
     function moveNo() {
       const noBtn = document.getElementById("noBtn");
@@ -89,10 +88,13 @@
       const heart = document.createElement("div");
       heart.className = "heart";
 
-      const yesBtn = document.querySelector("button[onclick='yesClicked()']");
+      // Get Yes button center relative to page
       const rect = yesBtn.getBoundingClientRect();
-      heart.style.left = rect.left + rect.width/2 + "px";
-      heart.style.top = rect.top + "px";
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+      heart.style.left = rect.left + rect.width/2 + scrollLeft - 10 + "px"; // -10 to center heart
+      heart.style.top = rect.top + scrollTop - 10 + "px";
 
       heart.style.background = randomColor();
       heart.style.position = "absolute";
@@ -103,8 +105,9 @@
 
       document.body.appendChild(heart);
 
-      const randX = Math.random()*200 - 100; // horizontal movement
-      const randY = Math.random()*-300 - 50; // vertical float
+      // Animate heart
+      const randX = Math.random()*200 - 100;
+      const randY = Math.random()*-300 - 50;
       heart.animate([
         { transform: "translate(0,0) rotate(45deg)", opacity: 1 },
         { transform: `translate(${randX}px, ${randY}px) rotate(45deg)`, opacity: 0 }
