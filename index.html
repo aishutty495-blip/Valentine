@@ -33,7 +33,6 @@
 
     .heart {
       position: absolute;
-      font-size: 24px;
       animation: floatUp 2s linear forwards;
       pointer-events: none;
     }
@@ -54,11 +53,7 @@
 </head>
 <body>
 
-  <img 
-    src="cute.png"
-    alt="Cute Valentine"
-    style="width: 260px; margin-bottom: 20px;"
-  >
+  <img src="cute.png" alt="Cute Valentine" style="width: 260px; margin-bottom: 20px;">
   <h1>Shibuya, will you be my valentine? 💖</h1>
 
   <button id="yesBtn">Yes 💘</button>
@@ -67,11 +62,10 @@
   <div id="message"></div>
 
   <script>
-    let noBtnActive = true; // Flag to control No button movement
+    let noBtnActive = true;
 
-    // Move the No button randomly
     function moveNo() {
-      if (!noBtnActive) return; // Stop moving after Yes click
+      if (!noBtnActive) return;
 
       const noBtn = document.getElementById("noBtn");
       const maxX = window.innerWidth - noBtn.offsetWidth;
@@ -83,26 +77,19 @@
       noBtn.style.top = y + "px";
     }
 
-    // Handle Yes click
     document.getElementById("yesBtn").addEventListener("click", function() {
-      // Hide buttons
       document.getElementById("yesBtn").style.display = 'none';
       document.getElementById("noBtn").style.display = 'none';
-
-      // Disable No button movement
       noBtnActive = false;
 
-      // Center of the screen
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
 
-      // Create heart explosion
       const heartCount = 30;
       for (let i = 0; i < heartCount; i++) {
         createHeart(centerX, centerY);
       }
 
-      // Show message after animation
       setTimeout(() => {
         const message = document.getElementById("message");
         message.textContent = "Yay!!! ❤️ I knew it!";
@@ -110,29 +97,27 @@
       }, 2000);
     });
 
-    // Create a single heart flying out
     function createHeart(x, y) {
       const heart = document.createElement('div');
       heart.className = 'heart';
       heart.textContent = '💖';
 
-      // Adjust position so heart is visually centered
-      const size = 24; // base font-size, will randomize later
-      heart.style.left = x - size / 2 + 'px';
-      heart.style.top = y - size / 2 + 'px';
+      // Random font size first
+      const fontSize = 20 + Math.random() * 30;
+      heart.style.fontSize = fontSize + 'px';
 
-      const angle = Math.random() * 2 * Math.PI; // random direction
-      const distance = 100 + Math.random() * 100; // random distance
+      // Center heart based on its font size
+      heart.style.left = x - fontSize / 2 + 'px';
+      heart.style.top = y - fontSize / 2 + 'px';
+
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 100 + Math.random() * 100;
       heart.style.setProperty('--x', distance * Math.cos(angle) + 'px');
       heart.style.setProperty('--y', distance * Math.sin(angle) + 'px');
 
-      heart.style.fontSize = (20 + Math.random() * 30) + 'px';
       document.body.appendChild(heart);
 
-      // Remove after animation
-      setTimeout(() => {
-        heart.remove();
-      }, 2000);
+      setTimeout(() => heart.remove(), 2000);
     }
   </script>
 
