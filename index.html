@@ -35,6 +35,7 @@
       position: absolute;
       font-size: 24px;
       animation: floatUp 2s linear forwards;
+      pointer-events: none;
     }
 
     @keyframes floatUp {
@@ -60,7 +61,7 @@
   >
   <h1>Shibuya, will you be my valentine? 💖</h1>
 
-  <button onclick="yesClicked()">Yes 💘</button>
+  <button id="yesBtn">Yes 💘</button>
   <button id="noBtn" onmouseover="moveNo()">No 💔</button>
 
   <div id="message"></div>
@@ -79,15 +80,18 @@
     }
 
     // Handle Yes click
-    function yesClicked() {
+    document.getElementById("yesBtn").addEventListener("click", function() {
+      const yesBtn = this;
       // Hide buttons
-      document.querySelector('button[onclick="yesClicked()"]').style.display = 'none';
+      yesBtn.style.display = 'none';
       document.getElementById("noBtn").style.display = 'none';
 
-      // Position of the original heart (center of button)
-      const centerX = window.innerWidth / 2;
-      const centerY = 200; // approx where the button is
+      // Get button position
+      const rect = yesBtn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
+      // Create heart explosion
       const heartCount = 30;
       for (let i = 0; i < heartCount; i++) {
         createHeart(centerX, centerY);
@@ -99,24 +103,23 @@
         message.textContent = "Yay!!! ❤️ I knew it!";
         message.style.opacity = 1;
       }, 2000);
-    }
+    });
 
-    // Function to create a single heart
+    // Create a single heart flying out
     function createHeart(x, y) {
       const heart = document.createElement('div');
       heart.className = 'heart';
       heart.textContent = '💖';
       heart.style.left = x + 'px';
       heart.style.top = y + 'px';
-      // Random direction
-      const angle = Math.random() * 2 * Math.PI;
-      const distance = 100 + Math.random() * 100;
+      const angle = Math.random() * 2 * Math.PI; // random direction
+      const distance = 100 + Math.random() * 100; // random distance
       heart.style.setProperty('--x', distance * Math.cos(angle) + 'px');
       heart.style.setProperty('--y', distance * Math.sin(angle) + 'px');
       heart.style.fontSize = (20 + Math.random() * 30) + 'px';
       document.body.appendChild(heart);
 
-      // Remove heart after animation
+      // Remove after animation
       setTimeout(() => {
         heart.remove();
       }, 2000);
