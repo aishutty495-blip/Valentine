@@ -9,7 +9,7 @@
       background: #ffe6f0;
       text-align: center;
       margin-top: 100px;
-      overflow: hidden; /* prevents scrollbars when hearts float */
+      overflow: hidden;
     }
 
     h1 {
@@ -29,7 +29,6 @@
       position: absolute;
     }
 
-    /* Heart shape */
     .heart::before,
     .heart::after {
       content: "";
@@ -49,31 +48,31 @@
       left: 10px;
       top: 0;
     }
+
+    #message {
+      font-size: 24px;
+      color: #d63384;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Cute image -->
-  <img 
-    src="cute.png"
-    alt="Cute Valentine"
-    style="width: 260px; margin-bottom: 20px;"
-  >
-
-  <!-- Main question -->
+  <img src="cute.png" alt="Cute Valentine" style="width: 260px; margin-bottom: 20px; border-radius: 20px;">
   <h1>Shibuya, will you be my valentine? 💖</h1>
 
-  <!-- Buttons -->
   <button onclick="yesClicked()">Yes 💘</button>
   <button id="noBtn" onmouseover="moveNo()">No 💔</button>
 
-  <!-- JavaScript -->
+  <div id="message"></div>
+
   <script>
     function yesClicked() {
-      alert("Yay!!! ❤️ I knew it!");
+      // Show a non-blocking message
+      document.getElementById("message").innerText = "Yay!!! ❤️ I knew it!";
 
-      // Create 20 heartss
-      for(let i=0; i<20; i++){
+      // Create 30 hearts for a bigger effect
+      for(let i=0; i<30; i++){
         createHeart();
       }
     }
@@ -89,8 +88,7 @@
     function createHeart(){
       const heart = document.createElement("div");
       heart.className = "heart";
-      
-      // Start hearts from Yes button center
+
       const yesBtn = document.querySelector("button[onclick='yesClicked()']");
       const rect = yesBtn.getBoundingClientRect();
       heart.style.left = rect.left + rect.width/2 + "px";
@@ -105,16 +103,14 @@
 
       document.body.appendChild(heart);
 
-      // Animate heart
-      const randX = Math.random()*100 - 50; // random horizontal movement
-      const randY = Math.random()*-150 - 50; // random vertical float
+      const randX = Math.random()*200 - 100; // horizontal movement
+      const randY = Math.random()*-300 - 50; // vertical float
       heart.animate([
         { transform: "translate(0,0) rotate(45deg)", opacity: 1 },
         { transform: `translate(${randX}px, ${randY}px) rotate(45deg)`, opacity: 0 }
-      ], { duration: 1000, easing: "ease-out" });
+      ], { duration: 1500, easing: "ease-out" });
 
-      // Remove after animation
-      setTimeout(() => heart.remove(), 1000);
+      setTimeout(() => heart.remove(), 1500);
     }
 
     function randomColor(){
