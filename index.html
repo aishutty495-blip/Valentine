@@ -41,3 +41,67 @@
       pointer-events: none;
       user-select: none;
       z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="cute.png" alt="Cute Valentine" style="width: 260px; margin-bottom: 20px; border-radius: 20px;">
+  <h1>Shibuya, will you be my valentine? 💖</h1>
+
+  <button id="yesBtn">Yes 💘</button>
+  <button id="noBtn" onmouseover="moveNo()">No 💔</button>
+
+  <div id="message"></div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+
+    // Updated click event to include trip page redirect
+    yesBtn.addEventListener("click", () => {
+      document.getElementById("message").innerText = "Yay!!! ❤️ I knew it!";
+      for (let i = 0; i < 30; i++) {
+        createHeart();
+      }
+
+      // Redirect to trip info page after 2 seconds
+      setTimeout(() => {
+        window.location.href = "https://your-trip-info-page-link.com"; // <-- Replace with your trip link
+      }, 2000);
+    });
+
+    function moveNo() {
+      const noBtn = document.getElementById("noBtn");
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    function createHeart() {
+      const heart = document.createElement("span");
+      heart.className = "heart";
+      heart.innerText = "❤️";
+
+      const rect = yesBtn.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+      heart.style.left = rect.left + rect.width / 2 + scrollLeft - 12 + "px";
+      heart.style.top = rect.top + scrollTop - 12 + "px";
+
+      document.body.appendChild(heart);
+
+      const randX = (Math.random() - 0.5) * 200;
+      const randY = -150 - Math.random() * 150;
+
+      heart.animate([
+        { transform: "translate(0,0)", opacity: 1 },
+        { transform: `translate(${randX}px, ${randY}px)`, opacity: 0 }
+      ], { duration: 1500 + Math.random()*500, easing: "ease-out" });
+
+      setTimeout(() => heart.remove(), 1800);
+    }
+  </script>
+
+</body>
+</html>
