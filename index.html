@@ -81,15 +81,13 @@
 
     // Handle Yes click
     document.getElementById("yesBtn").addEventListener("click", function() {
-      const yesBtn = this;
       // Hide buttons
-      yesBtn.style.display = 'none';
+      document.getElementById("yesBtn").style.display = 'none';
       document.getElementById("noBtn").style.display = 'none';
 
-      // Get button position
-      const rect = yesBtn.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      // Center of the screen
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
 
       // Create heart explosion
       const heartCount = 30;
@@ -110,21 +108,7 @@
       const heart = document.createElement('div');
       heart.className = 'heart';
       heart.textContent = '💖';
-      heart.style.left = x + 'px';
-      heart.style.top = y + 'px';
-      const angle = Math.random() * 2 * Math.PI; // random direction
-      const distance = 100 + Math.random() * 100; // random distance
-      heart.style.setProperty('--x', distance * Math.cos(angle) + 'px');
-      heart.style.setProperty('--y', distance * Math.sin(angle) + 'px');
-      heart.style.fontSize = (20 + Math.random() * 30) + 'px';
-      document.body.appendChild(heart);
 
-      // Remove after animation
-      setTimeout(() => {
-        heart.remove();
-      }, 2000);
-    }
-  </script>
-
-</body>
-</html>
+      // Adjust position so heart is centered
+      heart.style.left = x - 12 + 'px'; // half of font-size (approx)
+      heart.style.to
