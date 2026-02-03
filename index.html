@@ -29,30 +29,18 @@
       position: absolute;
     }
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: 10px;
-      top: 0;
-    }
-
     #message {
       font-size: 24px;
       color: #d63384;
       margin-top: 20px;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1000;
     }
   </style>
 </head>
@@ -71,7 +59,7 @@
 
     yesBtn.addEventListener("click", () => {
       document.getElementById("message").innerText = "Yay!!! ❤️ I knew it!";
-      for(let i=0; i<30; i++){
+      for (let i = 0; i < 30; i++) {
         createHeart();
       }
     });
@@ -84,41 +72,30 @@
       noBtn.style.top = y + "px";
     }
 
-    function createHeart(){
-      const heart = document.createElement("div");
+    function createHeart() {
+      const heart = document.createElement("span");
       heart.className = "heart";
+      heart.innerText = "❤️";
 
-      // Get Yes button center relative to page
+      // Start at Yes button center
       const rect = yesBtn.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-      heart.style.left = rect.left + rect.width/2 + scrollLeft - 10 + "px"; // -10 to center heart
-      heart.style.top = rect.top + scrollTop - 10 + "px";
-
-      heart.style.background = randomColor();
-      heart.style.position = "absolute";
-      heart.style.width = "20px";
-      heart.style.height = "20px";
-      heart.style.transform = "rotate(45deg)";
-      heart.style.zIndex = "10";
+      heart.style.left = rect.left + rect.width / 2 + scrollLeft - 12 + "px";
+      heart.style.top = rect.top + scrollTop - 12 + "px";
 
       document.body.appendChild(heart);
 
-      // Animate heart
-      const randX = Math.random()*200 - 100;
-      const randY = Math.random()*-300 - 50;
+      // Random movement
+      const randX = (Math.random() - 0.5) * 200; // horizontal
+      const randY = -150 - Math.random() * 150;  // vertical
+
       heart.animate([
-        { transform: "translate(0,0) rotate(45deg)", opacity: 1 },
-        { transform: `translate(${randX}px, ${randY}px) rotate(45deg)`, opacity: 0 }
-      ], { duration: 1500, easing: "ease-out" });
+        { transform: "translate(0,0)", opacity: 1 },
+        { transform: `translate(${randX}px, ${randY}px)`, opacity: 0 }
+      ], { duration: 1500 + Math.random()*500, easing: "ease-out" });
 
-      setTimeout(() => heart.remove(), 1500);
-    }
-
-    function randomColor(){
-      const colors = ["#ff4d6d", "#ff7f87", "#ff66b3", "#ff1a75"];
-      return colors[Math.floor(Math.random() * colors.length)];
+      setTimeout(() => heart.remove(), 1800);
     }
   </script>
 
