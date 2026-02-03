@@ -67,8 +67,12 @@
   <div id="message"></div>
 
   <script>
+    let noBtnActive = true; // Flag to control No button movement
+
     // Move the No button randomly
     function moveNo() {
+      if (!noBtnActive) return; // Stop moving after Yes click
+
       const noBtn = document.getElementById("noBtn");
       const maxX = window.innerWidth - noBtn.offsetWidth;
       const maxY = window.innerHeight - noBtn.offsetHeight;
@@ -84,6 +88,9 @@
       // Hide buttons
       document.getElementById("yesBtn").style.display = 'none';
       document.getElementById("noBtn").style.display = 'none';
+
+      // Disable No button movement
+      noBtnActive = false;
 
       // Center of the screen
       const centerX = window.innerWidth / 2;
@@ -109,6 +116,25 @@
       heart.className = 'heart';
       heart.textContent = '💖';
 
-      // Adjust position so heart is centered
-      heart.style.left = x - 12 + 'px'; // half of font-size (approx)
-      heart.style.to
+      // Adjust position so heart is visually centered
+      const size = 24; // base font-size, will randomize later
+      heart.style.left = x - size / 2 + 'px';
+      heart.style.top = y - size / 2 + 'px';
+
+      const angle = Math.random() * 2 * Math.PI; // random direction
+      const distance = 100 + Math.random() * 100; // random distance
+      heart.style.setProperty('--x', distance * Math.cos(angle) + 'px');
+      heart.style.setProperty('--y', distance * Math.sin(angle) + 'px');
+
+      heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+      document.body.appendChild(heart);
+
+      // Remove after animation
+      setTimeout(() => {
+        heart.remove();
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
