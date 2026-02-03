@@ -41,6 +41,14 @@
       0% { opacity: 1; transform: translate(0,0) scale(1); }
       100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(2); }
     }
+
+    #message {
+      font-size: 36px;
+      color: #d63384;
+      margin-top: 50px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -55,6 +63,8 @@
   <button onclick="yesClicked()">Yes 💘</button>
   <button id="noBtn" onmouseover="moveNo()">No 💔</button>
 
+  <div id="message"></div>
+
   <script>
     // Move the No button randomly
     function moveNo() {
@@ -68,7 +78,7 @@
       noBtn.style.top = y + "px";
     }
 
-    // Create heart explosion
+    // Handle Yes click
     function yesClicked() {
       // Hide buttons
       document.querySelector('button[onclick="yesClicked()"]').style.display = 'none';
@@ -83,9 +93,11 @@
         createHeart(centerX, centerY);
       }
 
-      // Show alert after animation
+      // Show message after animation
       setTimeout(() => {
-        alert("Yay!!! ❤️ I knew it!");
+        const message = document.getElementById("message");
+        message.textContent = "Yay!!! ❤️ I knew it!";
+        message.style.opacity = 1;
       }, 2000);
     }
 
